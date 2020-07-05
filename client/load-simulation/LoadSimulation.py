@@ -31,7 +31,7 @@ def telemetry_loop():
             # Send the message.
             print( "Sending message: {}".format(msg))
             client.send_message(msg)
-            time.sleep(60)
+            time.sleep(5)
 
     except KeyboardInterrupt:
         print ( "Exiting..." )
