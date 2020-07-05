@@ -40,6 +40,7 @@ IOTKEY=$(az iot hub policy show \
 		   --subscription $SUB \
 		   --query="primaryKey" \
 		   --output=tsv)
+# Build connection string
 IOTCONNECTION="HostName=${IOTHOST};SharedAccessKeyName=iothubowner;SharedAccessKey=${IOTKEY}"
 
 # Link DPS to the hub
@@ -50,6 +51,24 @@ az iot dps linked-hub create \
    --location $LOC \
    --connection-string=$IOTCONNECTION
 
-# Ensure azure-iot extension installed:
-# az extension add --name azure-iot
+# Retrieve the default endpoint URL
+ENDPOINT_URL=$(az iot hub show \
+		  --name $IOTHUBNAME \
+		  --subscription $SUB \
+		  --query "properties.eventHubEndpoints.events.endpoint" \
+		  --output tsv)
+
+# Retrieve the EventHub name
+EVENTHUB_NAME=$(az iot hub show \
+		   --name $IOTHUBNAME \
+		   --subscription $SUB \
+		   --query "properties.eventHubEndpoints.events.path" \
+		   --output tsv)
+
+# Add the EventHub URL and hub name into a connection string
+EVENTHUB_ENDPOINT="Endpoint=${ENDPOINT_URL};SharedAccessKeyName=iothubowner;SharedAccessKey=${IOTKEY};EntityPath=${EVENTHUB_NAME}"
+
+# Display Eventhub Connection String
+echo $EVENTHUB_ENDPOINT
+
 

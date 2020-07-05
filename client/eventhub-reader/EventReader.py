@@ -6,12 +6,10 @@ from azure.eventhub import EventHubConsumerClient, EventHubProducerClient
 
 # Connection String
 CONN = sys.argv[1]
-HUBNAME = sys.argv[2]
 CONSUMER_GROUP = "$Default"
 
 client = EventHubConsumerClient.from_connection_string(CONN,
-                                                       CONSUMER_GROUP,
-                                                       eventhub_name=HUBNAME)
+                                                       CONSUMER_GROUP)
 
 def on_event(partition_context, event):
     print("event: {}", event)

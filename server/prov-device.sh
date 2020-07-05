@@ -23,4 +23,6 @@ DEVCONN=$(az iot hub device-identity show-connection-string \
 	     --subscription $SUB  \
 	     --device-id $DEVICE \
 	     --output tsv)
+
+# This is required for the device to connect
 echo $DEVCONN
